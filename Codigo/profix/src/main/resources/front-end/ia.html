@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Extração de Texto de Imagem (OCR)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
+    
+    <!-- Carregar o jQuery via CDN antes de qualquer outro script -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="assets/script/IA.js" type="text/javascript"></script> <!-- Link para o script.js -->
+
+    <style>
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        html {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background-color: #f4f5f6;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #titulo_princial {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            font-size: 40pt;
+            width: 100%;
+            background-color: #0056b3;
+            padding: 30px;
+            margin: 0;
+            color: #fff;
+        }
+        #corpo {
+            max-width: 1000px;
+            margin: auto;
+            padding-top: 20px;
+            text-align: center; /* Centraliza o conteúdo */
+        }
+        #entradas {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .entCampo {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 10px 0;
+            width: 100%;
+            justify-content: center;
+        }
+        .entTexto {
+            width: 40%;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .entInput {
+            width: 60%;
+            height: 35px;
+            padding: 0 10px;
+            border-radius: 5px;
+            border: 1px solid #007bff;
+            font-size: 16px;
+            color: #333;
+        }
+        #entButton {
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #entButton:hover {
+            background-color: #0056b3;
+        }
+        #wrapper {
+            display: flex;
+            justify-content: space-around; /* Alinha a imagem e os botões ao lado */
+            margin-top: 20px;
+        }
+        #jsonOutput, #imageDiv {
+            width: 48%;
+        }
+        #sourceImage {
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px; /* Limita o tamanho da imagem */
+        }
+        #cpfText {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 22px;
+            color: #007bff;
+            margin-bottom: 20px; /* Espaço entre o texto do CPF e os botões */
+        }
+        #cpfButtons {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .cpfButton {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+        .cpfButton:hover {
+            background-color: #218838;
+        }
+        .cpfButtonWrong {
+            background-color: #dc3545;
+        }
+        .cpfButtonWrong:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="titulo_princial">Extração de Texto de Imagem (OCR)</h1>
+    <div id="corpo">
+        <p>Entre com a imagem para obter o texto extraído.</p>
+        <div id="entradas">
+            <div class="entCampo">
+                <p class="entTexto">Selecione a Imagem:</p> 
+                <input class="entInput" type="file" name="inputImage" id="inputImage" accept="image/*"/>
+            </div>
+            <button id="entButton" onclick="processImage()">Analisar Imagem</button>
+        </div>
+        
+        <div id="wrapper">
+            <div id="jsonOutput">
+                <p id="cpfText"></p>
+            </div>
+            <div id="imageDiv">
+                <img id="sourceImage" src="" />
+                
+                <!-- Botões de validação ao lado da imagem -->
+                <div id="cpfButtons">
+                    <button class="cpfButton" onclick="checkCpf(true)">CPF Correto</button>
+                    <button class="cpfButton cpfButtonWrong" onclick="checkCpf(false)">CPF Errado</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

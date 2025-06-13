@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Perfil do Cliente - ProFix</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Ícones -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Arquivos CSS do Vendor -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Arquivo CSS Principal -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    /* Estilos para o menu de perfil */
+    #profileMenuItem {
+      position: relative;
+    }
+
+    #profileMenuItem .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: #fff;
+      border: 1px solid rgba(0,0,0,.15);
+      border-radius: 0.25rem;
+      padding: 0.5rem 0;
+      min-width: 160px;
+      z-index: 1000;
+    }
+
+    #profileMenuItem:hover .dropdown-menu {
+      display: block;
+    }
+
+    #profileMenuItem .dropdown-menu a {
+      color: #333;
+      padding: 0.5rem 1rem;
+      display: block;
+      text-decoration: none;
+    }
+
+    #profileMenuItem .dropdown-menu a:hover {
+      background-color: #f8f9fa;
+      color: #0d6efd;
+    }
+
+    #profileMenuItem .dropdown-divider {
+      margin: 0.5rem 0;
+      border-top: 1px solid rgba(0,0,0,.15);
+    }
+
+    #profileMenuItem .dropdown-toggle {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    #profileMenuItem .dropdown-toggle:hover {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+      color: white;
+      padding: 40px 0;
+      margin-bottom: 30px;
+    }
+    .profile-content {
+      padding: 20px;
+    }
+    .profile-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    .profile-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid white;
+      margin-bottom: 20px;
+    }
+    .service-card {
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .service-status {
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .status-pendente {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .status-in-progress {
+      background: #cce5ff;
+      color: #004085;
+    }
+    .status-completed {
+      background: #d4edda;
+      color: #155724;
+    }
+    .address-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    async function checkClienteAuth() {
+      try {
+        let res = await fetch('http://localhost:8081/usuario-logado', { credentials: 'include' });
+        if (!res.ok) throw new Error();
+        let user = await res.json();
+        if (!user || user.tipo !== 'Cliente') window.location.href = 'login.html';
+      } catch (e) {
+        window.location.href = 'login.html';
+      }
+    }
+    checkClienteAuth();
+  </script>
+
+  <header id="header" class="header d-flex align-items-center fixed-top" style="background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%); color: white;">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center" style="color: white;">
+        <!-- Descomente a linha abaixo se desejar usar um logo em imagem -->
+        <!-- <img src="assets/img/logo.webp" alt=""> -->
+        <i class="bi bi-buildings" style="color: white;"></i>
+        <h1 class="sitename" style="color: white;">ProFix</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu" style="width:100%;">
+        <ul style="display: flex; justify-content: center; align-items: center; gap: 24px; width: 100%; margin: 0;">
+          <li><a href="solicitar-orcamento.html" style="color: white;">Solicitar Orçamento</a></li>
+          <li><a href="meus-pedidos.html" style="color: white;">Meus Pedidos</a></li>
+          <li><a href="client-profile.html" id="perfilMenuBtn" style="color: white;">Meu Perfil</a></li>
+          <li id="profileMenuItem" style="display: none; margin-left: 130px;">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" style="color: white;">
+              <i class="bi bi-person-circle"></i> <span id="profileName">Perfil</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick="handleLogout()">Sair</a></li>
+            </ul>
+          </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list" style="color: white;"></i>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- Profile Header -->
+  <div class="profile-header" style="margin-top: 80px;">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-3 text-center">
+          <img id="profilePhoto" src="assets/img/profile-placeholder.jpg" alt="Foto de Perfil" class="profile-photo mb-2" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 6px solid #0d6efd; box-shadow: 0 4px 24px rgba(13,110,253,0.12);">
+        </div>
+        <div class="col-md-9">
+          <h1 id="profileUserName" style="font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #fff;">Nome do Usuário</h1>
+          <div class="mb-2" style="font-size: 1.2rem; color: #0d6efd; font-weight: 500;">Bem-vindo(a) à sua área exclusiva do cliente!</div>
+          <div class="mb-3" style="font-size: 1.05rem; color: #e3e3e3;">Aqui você pode gerenciar seus dados, acompanhar seus pedidos e manter seu cadastro sempre atualizado.</div>
+          <p class="mb-2" style="font-size: 1.1rem; color: #e3e3e3;">Cliente desde 2025</p>
+          <div class="d-flex align-items-center">
+            <i class="bi bi-shield-check me-2"></i>
+            <span>Conta Verificada</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container profile-content">
+    <div class="row justify-content-center">
+      <div class="col-lg-7 col-md-10 mb-4 mb-lg-0" style="margin-right: 0;">
+        <div class="profile-card" style="background: linear-gradient(135deg, #f8fafc 60%, #e3f0fa 100%); border: 1.5px solid #e0e6ed; box-shadow: 0 4px 24px rgba(13,110,253,0.07); border-radius: 22px; padding: 3.5rem 2.5rem; position: relative;">
+          <div class="d-flex flex-column align-items-center mb-4">
+            <div style="background: #e3f0fa; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 12px rgba(13,110,253,0.10); margin-bottom: 1.2rem;">
+              <i class="bi bi-person-circle" style="font-size: 3rem; color: #0d6efd;"></i>
+            </div>
+            <h3 class="mb-4" style="font-weight: 600; color: #0d6efd; letter-spacing: 1px; font-size: 2rem;">Informações Pessoais</h3>
+          </div>
+          <form id="profileForm">
+            <div class="mb-5 row align-items-center">
+              <label class="col-sm-4 col-form-label fw-bold text-secondary" style="font-size: 1.18rem;">Nome Completo</label>
+              <div class="col-sm-8 d-flex align-items-center gap-2">
+                <input type="text" class="form-control-plaintext px-3 py-2 rounded-3" id="userNome" readonly style="background: #f4f8fb; border: 1.5px solid #dbe6f3; font-size: 1.18rem; min-height: 48px; width: 100%;">
+                <span style="display:inline-block; min-width: 120px;"></span>
+              </div>
+            </div>
+            <div class="mb-5 row align-items-center">
+              <label class="col-sm-4 col-form-label fw-bold text-secondary" style="font-size: 1.18rem;">CPF</label>
+              <div class="col-sm-8 d-flex align-items-center gap-2">
+                <input type="text" class="form-control-plaintext px-3 py-2 rounded-3" id="userCpf" readonly style="background: #f4f8fb; border: 1.5px solid #dbe6f3; font-size: 1.18rem; min-height: 48px; width: 100%;">
+                <span style="display:inline-block; min-width: 120px;"></span>
+              </div>
+            </div>
+            <div class="mb-5 row align-items-center">
+              <label class="col-sm-4 col-form-label fw-bold text-secondary" style="font-size: 1.18rem;">Email</label>
+              <div class="col-sm-8 d-flex align-items-center gap-2">
+                <input type="email" class="form-control-plaintext px-3 py-2 rounded-3" id="userEmail" readonly style="background: #f4f8fb; border: 1.5px solid #dbe6f3; font-size: 1.18rem; min-height: 48px; width: 100%;">
+                <button type="button" class="btn btn-outline-primary btn-lg edit-btn" style="text-decoration: none;">Editar</button>
+                <button type="button" class="btn btn-primary btn-lg save-btn d-none">Salvar</button>
+              </div>
+            </div>
+            <div class="mb-5 row align-items-center">
+              <label class="col-sm-4 col-form-label fw-bold text-secondary" style="font-size: 1.18rem;">Telefone</label>
+              <div class="col-sm-8 d-flex align-items-center gap-2">
+                <input type="text" class="form-control-plaintext px-3 py-2 rounded-3" id="userTelefone" readonly style="background: #f4f8fb; border: 1.5px solid #dbe6f3; font-size: 1.18rem; min-height: 48px; width: 100%;">
+                <button type="button" class="btn btn-outline-primary btn-lg edit-btn" style="text-decoration: none;">Editar</button>
+                <button type="button" class="btn btn-primary btn-lg save-btn d-none">Salvar</button>
+              </div>
+            </div>
+            <div class="mb-5 row align-items-center">
+              <label class="col-sm-4 col-form-label fw-bold text-secondary" style="font-size: 1.18rem;">CEP</label>
+              <div class="col-sm-8 d-flex align-items-center gap-2">
+                <input type="text" class="form-control-plaintext px-3 py-2 rounded-3" id="userCep" readonly style="background: #f4f8fb; border: 1.5px solid #dbe6f3; font-size: 1.18rem; min-height: 48px; width: 100%;">
+                <button type="button" class="btn btn-outline-primary btn-lg edit-btn" style="text-decoration: none;">Editar</button>
+                <button type="button" class="btn btn-primary btn-lg save-btn d-none">Salvar</button>
+              </div>
+            </div>
+            <div class="mb-5 row align-items-center" id="fotoCpfLi" style="display:none;">
+              <label class="col-sm-4 col-form-label fw-bold text-secondary" style="font-size: 1.18rem;">Foto do CPF</label>
+              <div class="col-sm-8">
+                <img id="userFotoCpf" src="" alt="Foto do CPF" style="max-width: 100%; max-height: 140px; border-radius: 10px; margin-top: 5px; box-shadow: 0 2px 8px rgba(13,110,253,0.08);">
+              </div>
+            </div>
+          </form>
+          <div class="d-flex justify-content-center mt-4">
+            <button class="btn btn-lg btn-outline-primary" id="editPhotoBtn">Alterar Foto</button>
+            <input type="file" id="photoInput" accept="image/*" style="display:none;">
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-10 d-flex align-items-stretch">
+        <div class="profile-card w-100" style="background: linear-gradient(135deg, #f8fafc 60%, #e3f0fa 100%); border: 1.5px solid #e0e6ed; box-shadow: 0 4px 24px rgba(13,110,253,0.07); border-radius: 22px; padding: 2.5rem 2rem; position: relative;">
+          <h3>Meus Endereços</h3>
+          <div class="address-card">
+            <h5>Residência Principal</h5>
+            <div class="d-flex align-items-center gap-2">
+              <textarea class="form-control-plaintext px-3 py-2 rounded-3" id="userEndereco" readonly style="background: #f4f8fb; border: 1.5px solid #dbe6f3; font-size: 1.08rem; min-height: 60px; width: 100%; resize: vertical;"></textarea>
+              <button type="button" class="btn btn-link btn-lg edit-btn">Editar</button>
+              <button type="button" class="btn btn-primary btn-lg save-btn d-none">Salvar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para digitar a senha -->
+  <div class="modal fade" id="senhaModal" tabindex="-1" aria-labelledby="senhaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="senhaModalLabel">Confirme sua senha</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <input type="password" class="form-control" id="senhaAtualInput" placeholder="Digite sua senha atual">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="confirmarSenhaBtn">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arquivos JS do Vendor -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Arquivo JS Principal -->
+  <script src="assets/script/main.js"></script>
+
+  <script>
+    // Função para buscar usuário logado via backend
+    async function getLoggedUser() {
+      try {
+        let res = await fetch('http://localhost:8081/usuario-logado', { credentials: 'include' });
+        if (res.ok) return await res.json();
+      } catch (e) {}
+      return null;
+    }
+
+    // Função para fazer logout
+    async function handleLogout() {
+      try {
+        const res = await fetch('http://localhost:8081/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+        if (res.ok) {
+          window.location.href = 'index.html';
+        }
+      } catch (e) {
+        console.error('Erro ao fazer logout:', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Verifica login e tipo de usuário
+      const user = await getLoggedUser();
+      if (!user || user.tipo !== 'Cliente') {
+        window.location.href = 'login.html';
+        return;
+      }
+      // Atualiza o nome no dropdown
+      const profileName = document.getElementById('profileName');
+      if (profileName) {
+        profileName.textContent = user.nome || 'Perfil';
+      }
+      // Mostra o menu de perfil
+      const profileMenuItem = document.getElementById('profileMenuItem');
+      if (profileMenuItem) {
+        profileMenuItem.style.display = 'block';
+      }
+      // Preencher os dados do perfil com user
+      document.getElementById('profilePhoto').src = user.foto || 'assets/img/profile-placeholder.jpg';
+      document.getElementById('profileUserName').textContent = user.nome || 'Nome do Usuário';
+      document.getElementById('userNome').value = user.nome || '';
+      document.getElementById('userEmail').value = user.email || '';
+      document.getElementById('userTelefone').value = user.telefone || '';
+      document.getElementById('userCpf').value = user.cpf || '';
+      document.getElementById('userCep').value = user.cep || '';
+      document.getElementById('userEndereco').value = user.endereco || '';
+      if (user.fotoCpf) {
+        document.getElementById('userFotoCpf').src = user.fotoCpf;
+        document.getElementById('fotoCpfLi').style.display = 'flex';
+      }
+      // Edição inline dos campos
+      document.querySelectorAll('.edit-btn').forEach((btn, idx) => {
+        btn.addEventListener('click', function() {
+          const input = btn.parentElement.querySelector('input, textarea');
+          input.readOnly = false;
+          input.classList.remove('form-control-plaintext');
+          input.classList.add('form-control');
+          btn.classList.add('d-none');
+          btn.parentElement.querySelector('.save-btn').classList.remove('d-none');
+        });
+      });
+      let campoParaSalvar = null;
+      let inputParaSalvar = null;
+      document.querySelectorAll('.save-btn').forEach((btn, idx) => {
+        btn.addEventListener('click', async function() {
+          // Salvar referência do campo e input
+          campoParaSalvar = btn;
+          inputParaSalvar = btn.parentElement.querySelector('input, textarea');
+          // Abrir modal para digitar a senha
+          document.getElementById('senhaAtualInput').value = '';
+          var senhaModal = new bootstrap.Modal(document.getElementById('senhaModal'));
+          senhaModal.show();
+        });
+      });
+      document.getElementById('confirmarSenhaBtn').addEventListener('click', async function() {
+        const senhaInformada = document.getElementById('senhaAtualInput').value;
+        if (!senhaInformada) {
+          alert('Digite sua senha para confirmar a alteração.');
+          return;
+        }
+        // Fechar modal
+        var senhaModal = bootstrap.Modal.getInstance(document.getElementById('senhaModal'));
+        senhaModal.hide();
+        // Prosseguir com a atualização
+        const btn = campoParaSalvar;
+        const input = inputParaSalvar;
+        input.readOnly = true;
+        input.classList.remove('form-control');
+        input.classList.add('form-control-plaintext');
+        btn.classList.add('d-none');
+        btn.parentElement.querySelector('.edit-btn').classList.remove('d-none');
+        // Atualizar no backend
+        const userId = user.id || user.idUsuario || user.usuarioId;
+        // Buscar usuário completo do backend
+        let usuarioCompleto = null;
+        try {
+          const res = await fetch(`http://localhost:8081/usuarios/${userId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+          });
+          if (res.ok) {
+            usuarioCompleto = await res.json();
+          } else {
+            alert('Erro ao buscar dados do usuário.');
+            return;
+          }
+        } catch (e) {
+          alert('Erro ao buscar dados do usuário.');
+          return;
+        }
+        // Atualizar apenas o campo editado
+        if (input.id === 'userEmail') usuarioCompleto.email = input.value;
+        if (input.id === 'userTelefone') usuarioCompleto.telefone = input.value;
+        if (input.id === 'userCep') usuarioCompleto.cep = input.value;
+        if (input.id === 'userEndereco') usuarioCompleto.endereco = input.value;
+        // Enviar a senha em texto puro informada pelo usuário
+        usuarioCompleto.senha = senhaInformada;
+        try {
+          const res = await fetch(`http://localhost:8081/usuarios/${userId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(usuarioCompleto)
+          });
+          if (res.ok) {
+            alert('Dados atualizados com sucesso!');
+          } else {
+            alert('Erro ao atualizar dados.');
+          }
+        } catch (e) {
+          alert('Erro ao atualizar dados.');
+        }
+      });
+      // Alterar foto de perfil
+      document.getElementById('editPhotoBtn').onclick = () => {
+        document.getElementById('photoInput').click();
+      };
+      document.getElementById('photoInput').onchange = async function() {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            document.getElementById('profilePhoto').src = e.target.result;
+            // Aqui você pode enviar a nova foto para o backend
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+    });
+  </script>
+
+</body>
+
+</html> 

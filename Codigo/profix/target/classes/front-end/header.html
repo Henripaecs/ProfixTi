@@ -1,0 +1,24 @@
+<header id="header" class="header d-flex align-items-center fixed-top">
+  <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+    <a href="index.html" class="logo d-flex align-items-center">
+      <i class="bi bi-buildings" style="color: #fff;"></i>
+      <h1 class="sitename">ProFix</h1>
+    </a>
+    <nav id="navmenu" class="navmenu" style="width:100%;">
+      <ul style="display: flex; justify-content: center; align-items: center; gap: 24px; width: 100%; margin: 0;">
+        <li><a href="solicitar-orcamento.html">Solicitar Orçamento</a></li>
+        <li><a href="meus-pedidos.html">Meus Pedidos</a></li>
+        <li><a href="#" id="perfilMenuBtn">Meu Perfil</a></li>
+        <li id="profileMenuItem" style="display: none; margin-left: 130px;">
+          <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i> <span id="profileName">Perfil</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a href="#" onclick="handleLogout()">Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+  </div>
+</header> 

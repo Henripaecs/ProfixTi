@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Cadastro de Prestador - ProFix</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Ícones -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Arquivos CSS do Vendor -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Arquivo CSS Principal -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .register-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .register-header h1 {
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+    }
+
+    .btn-primary {
+      background: #0d6efd;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #0a58ca;
+    }
+
+    .terms-check {
+      margin: 20px 0;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .login-link a {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .file-upload {
+      border: 2px dashed #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    .file-upload:hover {
+      border-color: #0d6efd;
+    }
+
+    .file-upload i {
+      font-size: 24px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .file-upload p {
+      margin: 0;
+      color: #666;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="register-card">
+    <div class="register-header">
+      <h1>Cadastro de Prestador de Serviços</h1>
+      <p>Preencha os dados abaixo para criar sua conta</p>
+    </div>
+
+    <form onsubmit="return handleRegister(event)">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="firstName">Nome</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="lastName">Sobrenome</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Telefone</label>
+        <input type="tel" class="form-control" id="phone" name="phone" required>
+      </div>
+
+      <div class="form-group">
+        <label for="cpf">CPF</label>
+        <input type="text" class="form-control" id="cpf" name="cpf" required>
+      </div>
+
+      <div class="form-group">
+        <label for="cep">CEP</label>
+        <input type="text" class="form-control" id="cep" name="cep" required>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Endereço</label>
+        <input type="text" class="form-control" id="address" name="address" required>
+      </div>
+
+      <div class="form-group">
+        <label for="serviceType">Tipo de Serviço</label>
+        <select class="form-control" id="serviceType" name="serviceType" required>
+          <option value="">Selecione o tipo de serviço</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="experience">Anos de Experiência</label>
+        <input type="number" class="form-control" id="experience" name="experience" min="0" required>
+      </div>
+
+      <div class="form-group">
+        <label>Foto de Perfil</label>
+        <div class="file-upload" onclick="document.getElementById('profilePhoto').click()">
+          <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" style="display: none" required>
+          <i class="bi bi-camera"></i>
+          <p>Clique para adicionar uma foto</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Foto do CPF</label>
+        <div class="file-upload" onclick="document.getElementById('cpfPhoto').click()">
+          <input type="file" id="cpfPhoto" name="cpfPhoto" accept="image/*" style="display: none" required>
+          <i class="bi bi-file-earmark-text"></i>
+          <p>Clique para adicionar a foto do CPF</p>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="processImage()">Analisar Imagem do CPF</button>
+      </div>
+
+
+      <!-- Exibição do CPF extraído e botões para validação -->
+      <div class="form-group" id="cpfButtons" style="display: none;">
+        <label for="cpfText">CPF Extraído</label>
+        <div id="cpfText" style="font-weight: bold;"></div> <!-- Exibe o CPF extraído -->
+
+        <!-- Botões para validar se o CPF está correto ou não -->
+        <button type="button" class="btn btn-success" onclick="checkCpf(true)">CPF Correto</button>
+        <button type="button" class="btn btn-danger" onclick="checkCpf(false)">CPF Errado</button>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="confirmPassword">Confirmar Senha</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+      </div>
+
+      <div class="login-link">
+        <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+      </div>
+    </form>
+  </div>
+
+  <!-- Arquivos JS do Vendor -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Arquivo JS de Autenticação -->
+  <script src="assets/script/api-prestador.js"></script>
+  <script src="assets/script/main.js"></script>
+
+  <!-- Arquivo JS de Configuração -->
+  <script src="assets/script/config.js"></script>
+  <script src="assets/script/IAp.js"></script>
+
+  <!-- Arquivo JS de Máscaras e Validações (reutilizado do cliente) -->
+  <script src="assets/script/register.js"></script>
+
+  <script>
+    // Função para converter imagem em base64
+    function getBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    // Função para validar imagem
+    function validateImage(file) {
+      const validTypes = ['image/jpeg', 'image/png'];
+      const maxSize = 5 * 1024 * 1024; // 5MB
+
+      if (!validTypes.includes(file.type)) {
+        throw new Error('Apenas imagens JPEG e PNG são permitidas');
+      }
+
+      if (file.size > maxSize) {
+        throw new Error('A imagem deve ter no máximo 5MB');
+      }
+    }
+
+    async function handleRegister(event) {
+      event.preventDefault();
+      
+      // Verifica se as senhas coincidem
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (password !== confirmPassword) {
+        alert('As senhas não coincidem!');
+        return false;
+      }
+
+      // Máscaras e validações
+      const cpf = document.getElementById('cpf').value;
+      const cep = document.getElementById('cep').value;
+      if (!validarCPF(cpf)) {
+        alert('CPF inválido!');
+        return false;
+      }
+      if (!validarCEP(cep)) {
+        alert('CEP inválido!');
+        return false;
+      }
+
+      try {
+        // Processa as imagens
+        const profilePhoto = document.getElementById('profilePhoto').files[0];
+        const cpfPhoto = document.getElementById('cpfPhoto').files[0];
+
+        if (!profilePhoto || !cpfPhoto) {
+          alert('Por favor, selecione tanto a foto de perfil quanto a foto do CPF');
+          return false;
+        }
+
+        // Valida as imagens
+        validateImage(profilePhoto);
+        validateImage(cpfPhoto);
+
+        // Converte as imagens para base64
+        const [profileBase64, cpfBase64] = await Promise.all([
+          getBase64(profilePhoto),
+          getBase64(cpfPhoto)
+        ]);
+
+        // Coleta os dados do formulário
+        const userData = {
+          nome: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+          email: document.getElementById('email').value,
+          telefone: document.getElementById('phone').value,
+          cpf: document.getElementById('cpf').value,
+          cep: document.getElementById('cep').value,
+          endereco: document.getElementById('address').value,
+          habilidade: getCategoryById(document.getElementById('serviceType').value).name,
+          tempoExperiencia: document.getElementById('experience').value,
+          foto: profileBase64,
+          foto_cpf: cpfBase64,
+          senha: password,
+          tipo: 'Prestador'
+        };
+
+        // Tenta registrar o usuário
+        const res = await criarPrestador(userData);
+        if (res && res.id) {
+          window.location.href = 'provider-dashboard.html';
+        } else {
+          alert('Erro ao registrar. Verifique se o e-mail já não está cadastrado.');
+        }
+      } catch (error) {
+        alert(error.message || 'Erro ao processar as imagens. Tente novamente.');
+      }
+
+      return false;
+    }
+
+    // Atualiza o texto da área de upload quando um arquivo é selecionado
+    document.getElementById('profilePhoto').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        try {
+          validateImage(file);
+          const fileName = file.name;
+          this.parentElement.querySelector('p').textContent = fileName;
+        } catch (error) {
+          alert(error.message);
+          this.value = '';
+          this.parentElement.querySelector('p').textContent = 'Clique para adicionar uma foto';
+        }
+      }
+    });
+
+    document.getElementById('cpfPhoto').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        try {
+          validateImage(file);
+          const fileName = file.name;
+          this.parentElement.querySelector('p').textContent = fileName;
+        } catch (error) {
+          alert(error.message);
+          this.value = '';
+          this.parentElement.querySelector('p').textContent = 'Clique para adicionar a foto do CPF';
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Máscaras para CPF, CEP e telefone
+      const cpfInput = document.getElementById('cpf');
+      const cepInput = document.getElementById('cep');
+      const phoneInput = document.getElementById('phone');
+      if (cpfInput) {
+        cpfInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length <= 11) {
+            e.target.value = maskCPF(value);
+          }
+        });
+      }
+      if (cepInput) {
+        cepInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length <= 8) {
+            e.target.value = maskCEP(value);
+          }
+        });
+      }
+      if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length <= 11) {
+            e.target.value = maskPhone(value);
+          }
+        });
+      }
+      const serviceTypeSelect = document.getElementById('serviceType');
+      const categories = getAllCategories();
+      
+      // Limpa as opções existentes
+      serviceTypeSelect.innerHTML = '';
+      
+      // Adiciona as opções baseadas nas categorias centralizadas
+      categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        serviceTypeSelect.appendChild(option);
+      });
+    });
+  </script>
+</body>
+
+</html> 

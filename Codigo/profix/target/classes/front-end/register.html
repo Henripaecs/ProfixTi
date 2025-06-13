@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Cadastro - ProFix</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Ícones -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Arquivos CSS do Vendor -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Arquivo CSS Principal -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- Carregar o jQuery via CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .register-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .register-header h1 {
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+    }
+
+    .btn-primary {
+      background: #0d6efd;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #0a58ca;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .login-link a {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    #sourceImage {
+      max-width: 100%;
+      margin-top: 20px;
+    }
+
+    #cpfText {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 22px;
+      color: #007bff;
+    }
+
+    #cpfButtons {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .cpfButton {
+      background-color: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 0 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .cpfButton:hover {
+      background-color: #218838;
+    }
+
+    .cpfButtonWrong {
+      background-color: #dc3545;
+    }
+
+    .cpfButtonWrong:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="register-card">
+    <div class="register-header">
+      <h1>Cadastro de Cliente</h1>
+      <p>Preencha os dados abaixo para criar sua conta</p>
+    </div>
+
+    <form onsubmit="return handleRegister(event)">
+      <div class="form-group">
+        <label for="nome">Nome Completo</label>
+        <input type="text" class="form-control" id="nome" name="nome" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="cpf">CPF</label>
+        <input type="text" class="form-control" id="cpf" name="cpf" required>
+      </div>
+
+      <div class="form-group">
+        <label for="cep">CEP</label>
+        <input type="text" class="form-control" id="cep" name="cep" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Telefone</label>
+        <input type="tel" class="form-control" id="phone" name="phone" required>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Endereço</label>
+        <input type="text" class="form-control" id="address" name="address" required>
+      </div>
+
+      <div class="form-group">
+        <label for="foto">Foto de Perfil</label>
+        <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <label for="foto_cpf">Foto do CPF</label>
+        <input type="file" class="form-control" id="foto_cpf" name="foto_cpf" accept="image/*" required>
+      </div>
+
+      <!-- Botão para analisar a imagem -->
+      <button type="button" class="btn btn-primary" onclick="processImage()">Analisar Imagem do CPF</button>
+
+      <!-- Aqui a imagem será exibida após o processamento -->
+      <div id="imageDiv">
+        <img id="sourceImage" width="300" />
+      </div>
+
+      <!-- Exibindo o CPF e os botões para confirmação -->
+      <p id="cpfText"></p>
+      <div id="cpfButtons">
+        <button class="cpfButton" onclick="checkCpf(true)">CPF Correto</button>
+        <button class="cpfButton cpfButtonWrong" onclick="checkCpf(false)">CPF Errado</button>
+      </div>
+      <p id="cpfText"></p>
+      <div id="cpfButtons" style="display:none;">
+        <button class="cpfButton" onclick="checkCpf(true)">CPF Correto</button>
+        <button class="cpfButton cpfButtonWrong" onclick="checkCpf(false)">CPF Errado</button>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="confirmPassword">Confirmar Senha</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+      </div>
+
+      <div class="login-link">
+        <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+      </div>
+    </form>
+  </div>
+
+  <!-- Arquivos JS do Vendor -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Link para o script do IA.js -->
+  <script src="assets/script/IA.js"></script>
+  <script src="assets/script/register.js"></script>
+  <script src="assets/script/main.js"></script>
+  <script src="assets/script/api-usuarios.js"></script>
+  <script>
+    async function handleRegister(event) {
+      event.preventDefault();
+      
+      try {
+        // Verifica se as senhas coincidem
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (password !== confirmPassword) {
+          alert('As senhas não coincidem!');
+          return false;
+        }
+
+        // Valida CPF
+        const cpf = document.getElementById('cpf').value;
+        if (!validarCPF(cpf)) {
+          alert('CPF inválido!');
+          return false;
+        }
+
+        // Valida CEP
+        const cep = document.getElementById('cep').value;
+        if (!validarCEP(cep)) {
+          alert('CEP inválido!');
+          return false;
+        }
+
+        // Valida telefone
+        const telefone = document.getElementById('phone').value;
+        if (!validarTelefone(telefone)) {
+          alert('Telefone inválido!');
+          return false;
+        }
+
+        // Processa as imagens
+        let fotoPerfil = "";
+        let fotoCPF = "";
+
+        const fotoPerfilFile = document.getElementById('foto').files[0];
+        if (fotoPerfilFile) {
+          validarImagem(fotoPerfilFile);
+          fotoPerfil = await getBase64(fotoPerfilFile);
+        }
+
+        const fotoCPFFile = document.getElementById('foto_cpf').files[0];
+        if (fotoCPFFile) {
+          validarImagem(fotoCPFFile);
+          fotoCPF = await getBase64(fotoCPFFile);
+        }
+
+        // Coleta os dados do formulário
+        const userData = {
+          nome: document.getElementById('nome').value,
+          email: document.getElementById('email').value,
+          telefone: telefone,
+          cpf: cpf,
+          cep: cep,
+          endereco: document.getElementById('address').value,
+          foto: fotoPerfil,
+          foto_cpf: fotoCPF,
+          senha: password,
+          tipo: 'Cliente'
+        };
+
+        // Tenta registrar o usuário
+        const res = await criarUsuario(userData);
+        if (res && res.id) {
+          window.location.href = 'solicitar-orcamento.html';
+        } else {
+          alert('Erro ao registrar. Verifique se o e-mail já não está cadastrado.');
+        }
+      } catch (error) {
+        alert(error.message || 'Erro ao registrar. Tente novamente.');
+      }
+
+      return false;
+    }
+  </script>
+</body>
+
+
+</html> 

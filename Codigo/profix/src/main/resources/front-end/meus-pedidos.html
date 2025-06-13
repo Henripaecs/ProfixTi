@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Meus Pedidos - ProFix</title>
+  <meta name="description" content="Histórico de pedidos do cliente ProFix">
+  <meta name="keywords" content="serviços, histórico, pedidos, ProFix">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    /* Estilos para o menu de perfil e cards de pedidos */
+    #profileMenuItem { position: relative; }
+    #profileMenuItem .dropdown-menu { display: none; position: absolute; right: 0; background-color: #fff; border: 1px solid rgba(0,0,0,.15); border-radius: 0.25rem; padding: 0.5rem 0; min-width: 160px; z-index: 1000; }
+    #profileMenuItem:hover .dropdown-menu { display: block; }
+    #profileMenuItem .dropdown-menu a { color: #333; padding: 0.5rem 1rem; display: block; text-decoration: none; }
+    #profileMenuItem .dropdown-menu a:hover { background-color: #f8f9fa; color: #0d6efd; }
+    #profileMenuItem .dropdown-divider { margin: 0.5rem 0; border-top: 1px solid rgba(0,0,0,.15); }
+    #profileMenuItem .dropdown-toggle { color: #0d6efd; text-decoration: none; font-weight: 500; }
+    #profileMenuItem .dropdown-toggle:hover { color: #0a58ca; }
+    .pedido-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.07); margin-bottom: 24px; padding: 24px; }
+    .pedido-card .pedido-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .pedido-card .pedido-status { font-size: 0.95rem; font-weight: 500; border-radius: 12px; padding: 4px 14px; }
+    .pedido-status.pendente { background: #ffeeba; color: #856404; }
+    .pedido-status.aceito { background: #d4edda; color: #155724; }
+    .pedido-status.rejected { background: #f8d7da; color: #721c24; }
+    .pedido-status.completed { background: #d1ecf1; color: #0c5460; }
+    .pedido-card .pedido-body { margin-bottom: 8px; }
+    .pedido-card .pedido-footer { font-size: 0.95rem; color: #888; }
+    .pedido-card img { max-width: 220px; max-height: 220px; min-width: 220px; min-height: 220px; width: 220px; height: 220px; object-fit: cover; border-radius: 8px; margin-right: 16px; }
+    .pedido-list-empty { text-align: center; color: #888; margin-top: 40px; font-size: 1.2rem; }
+  </style>
+</head>
+<body class="meus-pedidos-page" style="min-height: 100vh; display: flex; flex-direction: column;">
+  <script>
+    async function checkClienteAuth() {
+      try {
+        let res = await fetch('http://localhost:8081/usuario-logado', { credentials: 'include' });
+        if (!res.ok) throw new Error();
+        let user = await res.json();
+        if (!user || user.tipo !== 'Cliente') window.location.href = 'login.html';
+      } catch (e) {
+        window.location.href = 'login.html';
+      }
+    }
+    checkClienteAuth();
+  </script>
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <i class="bi bi-buildings" style="color: white;"></i>
+        <h1 class="sitename">ProFix</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu" style="width:100%;">
+        <ul style="display: flex; justify-content: center; align-items: center; gap: 24px; width: 100%; margin: 0;">
+          <li><a href="solicitar-orcamento.html">Solicitar Orçamento</a></li>
+          <li><a href="meus-pedidos.html">Meus Pedidos</a></li>
+          <li><a href="#" id="perfilMenuBtn">Meu Perfil</a></li>
+          <li id="profileMenuItem" style="display: none; margin-left: 130px;">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle"></i> <span id="profileName">Perfil</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#" onclick="handleLogout()">Sair</a></li>
+            </ul>
+          </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main" style="flex: 1 0 auto;">
+    <div class="page-title dark-background" style="background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); padding: 60px 0; position: relative;">
+      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIi8+PC9zdmc+'); opacity: 0.5;"></div>
+      <div class="container position-relative" style="padding-top: 40px; text-align: center;">
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Meus Pedidos</h1>
+        <p style="font-size: 1rem; margin-bottom: 0.5rem;">Veja o histórico de todos os pedidos feitos por você na plataforma.</p>
+      </div>
+    </div>
+    <section id="meus-pedidos" class="section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div id="pedido-list" class="row justify-content-center"></div>
+        <div id="pedido-list-empty" class="pedido-list-empty" style="display:none;">Nenhum pedido encontrado.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative dark-background" style="flex-shrink: 0;">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">ProFix</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>A108 Adam Street</p>
+            <p>New York, NY 535022</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+            <p><strong>Email:</strong> <span>info@example.com</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Links Úteis</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre nós</a></li>
+            <li><a href="#">Serviços</a></li>
+            <li><a href="#">Termos de serviço</a></li>
+            <li><a href="#">Política de privacidade</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Nossos Serviços</h4>
+          <ul>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Desenvolvimento Web</a></li>
+            <li><a href="#">Gestão de Produto</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Design Gráfico</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Hic solutasetp</h4>
+          <ul>
+            <li><a href="#">Molestiae accusamus iure</a></li>
+            <li><a href="#">Excepturi dignissimos</a></li>
+            <li><a href="#">Suscipit distinctio</a></li>
+            <li><a href="#">Dilecta</a></li>
+            <li><a href="#">Sit quas consectetur</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Nobis illum</h4>
+          <ul>
+            <li><a href="#">Ipsam</a></li>
+            <li><a href="#">Laudantium dolorum</a></li>
+            <li><a href="#">Dinera</a></li>
+            <li><a href="#">Trodelas</a></li>
+            <li><a href="#">Flexo</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">ProFix</strong> <span>Todos os direitos reservados</span></p>
+      <div class="credits">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/script/main.js"></script>
+  <script src="assets/script/api-pedidos.js"></script>
+  <script>
+    // Configurar o menu de perfil
+    (async function() {
+      async function getLoggedUser() {
+        try {
+          let res = await fetch('http://localhost:8081/usuario-logado', { credentials: 'include' });
+          if (res.ok) return await res.json();
+        } catch (e) {}
+        return null;
+      }
+      const user = await getLoggedUser();
+      const profileMenuItem = document.getElementById('profileMenuItem');
+      const profileNameSpan = document.getElementById('profileName');
+      const perfilMenuBtn = document.getElementById('perfilMenuBtn');
+      if (user && user.tipo === 'Cliente') {
+        if (profileMenuItem) profileMenuItem.style.display = 'list-item';
+        if (profileNameSpan) profileNameSpan.textContent = user.nome;
+        if (perfilMenuBtn) perfilMenuBtn.href = 'client-profile.html';
+      } else {
+        if (profileMenuItem) profileMenuItem.style.display = 'none';
+        if (perfilMenuBtn) perfilMenuBtn.href = 'login.html';
+      }
+    })();
+  </script>
+</body>
+</html> 
